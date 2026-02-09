@@ -8,8 +8,7 @@
 \usepackage[a4paper,margin=1in]{geometry}
 \usepackage{booktabs}
 \usepackage{hyperref}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
+% algorithm/algpseudocode not needed in unified paper (used in standalone Q10)
 \hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
 
 \setlength{\parskip}{0.5em}
@@ -57,7 +56,9 @@ Solved from a Single Framework}
 \author{Jonathan Washburn\\
 Recognition Science --- Recognition Physics Institute\\
 Austin, Texas, USA\\
-\texttt{jon@recognitionphysics.org}}
+\texttt{jon@recognitionphysics.org}\\[4pt]
+ORCID: \href{https://orcid.org/0009-0001-8868-7497}{0009-0001-8868-7497}\\[2pt]
+Repository: \href{https://github.com/jonwashburn/first-proof}{github.com/jonwashburn/first-proof}}
 
 \date{February 9, 2026}
 
@@ -79,7 +80,7 @@ The fact that a single zero-parameter framework provides the architectural guida
 
 \emph{First Proof}~\cite{AbouzaidEtAl2026} presents ten research-level mathematics questions from the active research of eleven leading mathematicians. The problems span nine distinct mathematical fields, each with a proof of roughly five pages or less. The answers were encrypted and posted to \url{https://1stproof.org} prior to public release.
 
-We solve these problems using Recognition Science (RS), a zero-parameter mathematical framework built from the tautology ``Nothing cannot recognize itself.'' RS derives a unique cost functional $J(x)=\tfrac12(x+x^{-1})-1$, finite local resolution (RG4), canonical projections to neutrality, and contractive tick dynamics. Two derived tools organize the proofs:
+We solve these problems using Recognition Science (RS), a zero-parameter mathematical framework built from the tautology ``Nothing cannot recognize itself.'' The axiomatic foundations of Recognition Geometry---the mathematical layer underpinning RS---have been published and formally verified in Lean~4~\cite{WashburnZlatanovicAllahyarov2026}. RS derives a unique cost functional $J(x)=\tfrac12(x+x^{-1})-1$, finite local resolution (RG4), canonical projections to neutrality, and contractive tick dynamics. Two derived tools organize the proofs:
 
 \begin{itemize}
 \item \textbf{The Recognition Stability Audit (RSA)}~\cite{RSA2026}: an impossibility-certification compiler that encodes existence claims as obstruction zeros and certifies boundedness via Schur/Pick theory.
@@ -344,6 +345,12 @@ R.~F.~Brown.
 N.~Barashkov and M.~Gubinelli.
 \newblock A variational method for $\Phi^4_3$.
 \newblock \emph{Duke Math. J.}, 169(17):3339--3415, 2021.
+
+\bibitem{WashburnZlatanovicAllahyarov2026}
+J.~Washburn, M.~Zlatanovi\'c, and E.~Allahyarov.
+\newblock Recognition Geometry.
+\newblock \emph{Axioms}, 2026.
+\newblock \href{https://doi.org/10.3390/axioms1010000}{doi:10.3390/axioms1010000}.
 
 \end{thebibliography}
 
