@@ -58,7 +58,7 @@ The RS prediction is then converted into a self-contained classical proof using 
 | 2 | Whittaker model Rankin–Selberg integral | Representation Theory | Nelson | 🔲 |
 | 3 | Markov chain from interpolation ASEP polynomials | Algebraic Combinatorics | Williams | ✅ `solution_q3.tex` |
 | 4 | Superadditivity of $1/\Phi_n$ under free convolution | Spectral Graph Theory | Spielman/Srivastava | 🔲 |
-| 5 | $O$-slice connectivity via geometric fixed points | Algebraic Topology | Blumberg | 🔲 |
+| 5 | $O$-slice connectivity via geometric fixed points | Algebraic Topology | Blumberg | ✅ `solution_q5.tex` |
 | 6 | Existence of $\epsilon$-light vertex subsets | Spectral Graph Theory | Spielman | 🔲 |
 | 7 | Lattice fundamental groups with acyclic cover | Lattices in Lie Groups | Weinberger | 🔲 |
 | 8 | Lagrangian smoothing of polyhedral surfaces | Symplectic Geometry | Abouzaid | ✅ `solution_q8.tex` |
@@ -116,6 +116,7 @@ first-proof/
 ├── CPM.tex                            # Coercive Projection Method — proof template
 ├── solution_q1.tex                    # Q1: Φ⁴₃ quasi-invariance (Hairer)
 ├── solution_q3.tex                    # Q3: ASEP Markov chain (Williams)
+├── solution_q5.tex                    # Q5: O-slice filtration (Blumberg)
 ├── solution_q8.tex                    # Q8: Lagrangian smoothing (Abouzaid)
 ├── solution_q9.tex                    # Q9: Rank-1 tensor detection (Kileel)
 └── solution_q10.tex                   # Q10: PCG for RKHS-CP (Kolda)
@@ -128,6 +129,7 @@ Each solution is a standalone LaTeX document:
 ```bash
 pdflatex solution_q1.tex
 pdflatex solution_q3.tex
+pdflatex solution_q5.tex
 pdflatex solution_q8.tex
 pdflatex solution_q9.tex
 pdflatex solution_q10.tex
