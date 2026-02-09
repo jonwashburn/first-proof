@@ -56,12 +56,12 @@ The RS prediction is then converted into a self-contained classical proof using 
 |---|---------|--------|--------|--------|
 | 1 | Quasi-invariance of $\Phi^4_3$ measure | Stochastic Analysis | Hairer | ✅ `solution_q1.tex` |
 | 2 | Whittaker model Rankin–Selberg integral | Representation Theory | Nelson | 🔲 |
-| 3 | Markov chain from interpolation ASEP polynomials | Algebraic Combinatorics | Williams | 🔲 |
+| 3 | Markov chain from interpolation ASEP polynomials | Algebraic Combinatorics | Williams | ✅ `solution_q3.tex` |
 | 4 | Superadditivity of $1/\Phi_n$ under free convolution | Spectral Graph Theory | Spielman/Srivastava | 🔲 |
 | 5 | $O$-slice connectivity via geometric fixed points | Algebraic Topology | Blumberg | 🔲 |
 | 6 | Existence of $\epsilon$-light vertex subsets | Spectral Graph Theory | Spielman | 🔲 |
 | 7 | Lattice fundamental groups with acyclic cover | Lattices in Lie Groups | Weinberger | 🔲 |
-| 8 | Lagrangian smoothing of polyhedral surfaces | Symplectic Geometry | Abouzaid | 🔲 |
+| 8 | Lagrangian smoothing of polyhedral surfaces | Symplectic Geometry | Abouzaid | ✅ `solution_q8.tex` |
 | 9 | Polynomial map detecting rank-1 tensor scaling | Tensor Analysis | Kileel | ✅ `solution_q9.tex` |
 | 10 | Preconditioned CG for RKHS-regularized CP decomposition | Numerical Linear Algebra | Kolda | ✅ `solution_q10.tex` |
 
@@ -82,6 +82,8 @@ Once you see this skeleton, the domain-specific details become engineering: fill
 For each problem, RS predicts the answer from first principles:
 
 - **Q1 (Φ⁴₃ quasi-invariance):** Smooth shifts have finite recognition cost → cannot change null sets → **YES**
+- **Q3 (ASEP Markov chain):** Any positive distribution on a finite set admits a ledger-balanced update → Metropolis on adjacent transpositions → **YES**
+- **Q8 (Lagrangian smoothing):** 4-valent = C¹ generating function → mollify + exact-graph Hamiltonian → **YES**
 - **Q9 (rank-1 detection):** Rank-1 = single recognition channel → determinantal syzygies characterize it → **YES** 
 - **Q10 (PCG for RKHS-CP):** Kronecker structure = factored resolution → full-data preconditioner is the J-projection → **explicit algorithm**
 
@@ -113,6 +115,8 @@ first-proof/
 ├── Recognition_Stability_Audit.tex    # RSA method — impossibility certification
 ├── CPM.tex                            # Coercive Projection Method — proof template
 ├── solution_q1.tex                    # Q1: Φ⁴₃ quasi-invariance (Hairer)
+├── solution_q3.tex                    # Q3: ASEP Markov chain (Williams)
+├── solution_q8.tex                    # Q8: Lagrangian smoothing (Abouzaid)
 ├── solution_q9.tex                    # Q9: Rank-1 tensor detection (Kileel)
 └── solution_q10.tex                   # Q10: PCG for RKHS-CP (Kolda)
 ```
@@ -123,6 +127,8 @@ Each solution is a standalone LaTeX document:
 
 ```bash
 pdflatex solution_q1.tex
+pdflatex solution_q3.tex
+pdflatex solution_q8.tex
 pdflatex solution_q9.tex
 pdflatex solution_q10.tex
 ```
