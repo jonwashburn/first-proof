@@ -55,7 +55,7 @@ The RS prediction is then converted into a self-contained classical proof using 
 | # | Problem | Domain | Author | Status |
 |---|---------|--------|--------|--------|
 | 1 | Quasi-invariance of $\Phi^4_3$ measure | Stochastic Analysis | Hairer | ✅ `solution_q1.tex` |
-| 2 | Whittaker model Rankin–Selberg integral | Representation Theory | Nelson | 🔲 |
+| 2 | Whittaker model Rankin–Selberg integral | Representation Theory | Nelson | ✅ `solution_q2.tex` |
 | 3 | Markov chain from interpolation ASEP polynomials | Algebraic Combinatorics | Williams | ✅ `solution_q3.tex` |
 | 4 | Superadditivity of $1/\Phi_n$ under free convolution | Spectral Graph Theory | Spielman/Srivastava | 🔲 |
 | 5 | $O$-slice connectivity via geometric fixed points | Algebraic Topology | Blumberg | ✅ `solution_q5.tex` |
@@ -115,6 +115,7 @@ first-proof/
 ├── Recognition_Stability_Audit.tex    # RSA method — impossibility certification
 ├── CPM.tex                            # Coercive Projection Method — proof template
 ├── solution_q1.tex                    # Q1: Φ⁴₃ quasi-invariance (Hairer)
+├── solution_q2.tex                    # Q2: Rankin-Selberg Whittaker (Nelson)
 ├── solution_q3.tex                    # Q3: ASEP Markov chain (Williams)
 ├── solution_q5.tex                    # Q5: O-slice filtration (Blumberg)
 ├── solution_q7.tex                    # Q7: Lattice torsion obstruction (Weinberger)
@@ -129,6 +130,7 @@ Each solution is a standalone LaTeX document:
 
 ```bash
 pdflatex solution_q1.tex
+pdflatex solution_q2.tex
 pdflatex solution_q3.tex
 pdflatex solution_q5.tex
 pdflatex solution_q7.tex
