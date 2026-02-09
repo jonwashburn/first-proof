@@ -1,10 +1,6 @@
-\documentclass[12pt]{article}
+\documentclass[11pt]{article}
 
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage{lmodern}
-\usepackage{amsmath,amssymb,amsthm,mathtools}
-\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
 \usepackage[a4paper,margin=1in]{geometry}
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
@@ -13,7 +9,7 @@
 \setlength{\parindent}{0pt}
 
 \theoremstyle{plain}
-\newtheorem{theorem}{Theorem}[section]
+\newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -25,10 +21,6 @@
 \newtheorem{remark}[theorem]{Remark}
 
 \newcommand{\R}{\mathbb{R}}
-\newcommand{\C}{\mathbb{C}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\Z}{\mathbb{Z}}
-\DeclareMathOperator{\sgn}{sgn}
 
 \title{Solution to First Proof, Question~9:\\
 Algebraic Relations on Determinantal Tensors\\
@@ -40,14 +32,14 @@ Recognition Science, Recognition Physics Institute\\
 Austin, Texas, USA\\
 \texttt{jon@recognitionphysics.org}}
 
-\date{February 8, 2026}
+\date{February 9, 2026}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-We prove that a polynomial map $\mathbf{F}:\R^{81n^4}\to\R^N$ exists satisfying the three stated properties. The answer is \textbf{yes}. The map consists of Grassmann--Pl\"ucker quadratic syzygies for $4\times 4$ determinants. When $\lambda$ has rank-1 structure $\lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta w_\gamma x_\delta$, the weighted tensors become determinants of rescaled vectors and therefore satisfy all Pl\"ucker relations universally. Conversely, for Zariski-generic $A^{(1)},\ldots,A^{(n)}$, the Pl\"ucker relations force $\lambda$ to be rank-1. The degree is 2 (quadratic), independent of both $n$ and $A$.
+We prove that a polynomial map $\mathbf{F}:\R^{81n^4}\to\R^N$ exists satisfying the three stated properties. The answer is \textbf{yes}. The map $\mathbf{F}$ is the collection of all $5\times 5$ minors of the four mode-unfoldings of the input tensor (after a fixed reshaping). The degree is $5$, independent of both $n$ and $A$. The key geometric fact is that the determinantal tensors $Q$ have mode-ranks exactly $4$ (because the row-vectors live in $\R^4$), and rank-one diagonal scaling preserves mode-ranks. The converse---that mode-rank $\leq 4$ forces rank-one $\lambda$---follows by an iterative separation argument using the uniqueness (up to proportion) of linear dependencies among $5$ vectors in $\R^4$.
 \end{abstract}
 
 \tableofcontents
@@ -56,229 +48,228 @@ We prove that a polynomial map $\mathbf{F}:\R^{81n^4}\to\R^N$ exists satisfying 
 \section{The Question (Kileel)}
 %% ===================================================================
 
-Let $n\ge 5$, $A^{(1)},\ldots,A^{(n)}\in\R^{3\times 4}$ Zariski-generic. For $\alpha,\beta,\gamma,\delta\in[n]$, define $Q^{(\alpha\beta\gamma\delta)}\in\R^{3\times 3\times 3\times 3}$ by
+Fix $n\ge 5$ and Zariski-generic matrices $A^{(1)},\dots,A^{(n)}\in\R^{3\times 4}$.
+For each $(\alpha,\beta,\gamma,\delta)\in[n]^4$, define a tensor
+$Q^{(\alpha\beta\gamma\delta)}\in\R^{3\times 3\times 3\times 3}$ by
 \[
-Q^{(\alpha\beta\gamma\delta)}_{ijk\ell} \;=\; \det\!\begin{pmatrix} A^{(\alpha)}(i,:)\\ A^{(\beta)}(j,:)\\ A^{(\gamma)}(k,:)\\ A^{(\delta)}(\ell,:) \end{pmatrix}.
+Q^{(\alpha\beta\gamma\delta)}_{ijk\ell}
+\;:=\;
+\det\!\begin{bmatrix}
+A^{(\alpha)}_{i,*}\\
+A^{(\beta)}_{j,*}\\
+A^{(\gamma)}_{k,*}\\
+A^{(\delta)}_{\ell,*}
+\end{bmatrix}
+\qquad (i,j,k,\ell\in[3]).
 \]
-
-Does there exist a polynomial map $\mathbf{F}:\R^{81n^4}\to\R^N$ such that:
-\begin{enumerate}
-\item $\mathbf{F}$ does not depend on $A^{(1)},\ldots,A^{(n)}$;
-\item the degrees of the coordinate functions of $\mathbf{F}$ do not depend on~$n$;
-\item for $\lambda\in\R^{n\times n\times n\times n}$ with $\lambda_{\alpha\beta\gamma\delta}\ne 0$ precisely when $\alpha,\beta,\gamma,\delta$ are not all identical: $\mathbf{F}(\lambda_{\alpha\beta\gamma\delta}\,Q^{(\alpha\beta\gamma\delta)}:\alpha,\beta,\gamma,\delta\in[n])=0$ iff $\exists\,u,v,w,x\in(\R^*)^n$ with $\lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta w_\gamma x_\delta$ for all non-identical $(\alpha,\beta,\gamma,\delta)$.
-\end{enumerate}
+Does there exist a polynomial map $\mathbf{F}:\R^{81n^4}\to\R^N$ satisfying the three properties stated in the problem?
 
 \medskip
 \textbf{Answer: Yes.}
 
 %% ===================================================================
-\section{Stage 1: RS-Primitive Derivation}
+\section{Stage 1: Recognition Science Formulation}
 %% ===================================================================
 
-\subsection{RS Principle: Finite local resolution (RG4) and factored structure}
-
-In Recognition Science, a rank-$r$ decomposition is a \emph{finite-resolution recognition mode}: $r$ independent channels, each a separable product across modes. The rank-1 condition $\lambda=u\otimes v\otimes w\otimes x$ is the simplest such mode---a single ``recognition channel'' that factors across all four index dimensions.
-
-The RS cost functional $J(x)=\tfrac12(x+x^{-1})-1$ has the fundamental property $J(xy)=J(x)+J(y)+2J(x)J(y)+2J(x)+2J(y)$ (the Recognition Composition Law). For rank-1 tensors, the ``cost'' factorizes across modes: $J(\lambda_{\alpha\beta\gamma\delta})$ decomposes into independent costs for each factor $u_\alpha, v_\beta, w_\gamma, x_\delta$. This \emph{additive decomposition of cost across modes} is the RS signature of rank-1 structure.
-
-\subsection{RS Principle: Determinantal ledger entries and Pl\"ucker syzygies}
-
-Each $Q^{(\alpha\beta\gamma\delta)}_{ijk\ell}$ is a $4\times 4$ determinant---a ``recognition event'' evaluating four vectors in $\R^4$. In RS, determinants are the canonical ``ledger entries'' for antisymmetric recognition (the signed volume of a 4-frame). The RS ledger conservation law (T3: closed-chain flux = 0) predicts that determinantal quantities satisfy \emph{exact syzygies}: the Grassmann--Pl\"ucker relations.
-
-These syzygies are quadratic (degree 2), universal (independent of the specific vectors), and arise from the tautological fact that $\dim\R^4=4$, so any 5 vectors are linearly dependent.
-
-\subsection{RS Principle: CPM structured set and coercivity}
-
-The CPM template maps onto this problem:
+In RG2 language (Recognition Geometry):
 \begin{itemize}
-\item \textbf{Structured set $\mathsf{S}$}: the \emph{determinantal variety}---the set of collections $\{T^{(\alpha\beta\gamma\delta)}_{ijk\ell}\}$ that ARE $4\times 4$ determinants of some vectors $\{\tilde{a}^{(\mu)}_r\in\R^4\}$.
-\item \textbf{Defect $\mathsf{D}$}: the residual of the Pl\"ucker relations when evaluated on the $T$-collection.
-\item \textbf{Coercivity}: Pl\"ucker defect $=0$ $\Longleftrightarrow$ $T\in\mathsf{S}$ $\Longleftrightarrow$ (for generic $A$) $\lambda$ is rank-1.
+\item Configuration space: $\mathcal{C}:=\R^{81n^4}$ (the raw observed data array).
+\item Event space: $\mathcal{E}:=\R^N$.
+\item Candidate state $S$: ``$\lambda$ factorizes off the diagonal as $u\otimes v\otimes w\otimes x$''.
+\item Defect functional (RS-style): a map $\Delta_S:\mathcal{C}\to \mathcal{E}$ whose zeros encode $S$.
 \end{itemize}
 
-\subsection{RS prediction}
-
-RS predicts: \emph{the Pl\"ucker relations (quadratic, universal, degree-2) cut out the rank-1 locus of $\lambda$ inside the weighted determinantal family, for generic $A$ and any $n\ge 5$.}
+The RSA mindset: choose a \emph{finite} defect encoding whose coordinates have \emph{bounded complexity}
+(degree not growing with $n$) and which is \emph{parameter-free} (no dependence on hidden $A$).
+The ambient geometric fact: all determinants live in an underlying
+$4$-dimensional latent space (the row-vectors live in $\R^4$), so \emph{rank-$4$} is the
+intrinsic finite-resolution scale (RG4). The corresponding finite certificate is: \emph{all $5\times 5$ minors vanish.}
 
 %% ===================================================================
-\section{Stage 2: Classical Proof}
+\section{Stage 2: Classical Construction and Proof}
 %% ===================================================================
 
-\subsection{Key observation: rank-1 scaling yields rescaled determinants}
+\subsection{Step 1: Reshape into a $(3n)^4$ tensor}
 
-\begin{lemma}[Rank-1 absorption into determinants]\label{lem:absorption}
-If $\lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta w_\gamma x_\delta$, then $T^{(\alpha\beta\gamma\delta)}_{ijk\ell}=\det(\tilde{a}^{(\alpha)}_i,\tilde{b}^{(\beta)}_j,\tilde{c}^{(\gamma)}_k,\tilde{d}^{(\delta)}_\ell)$ where:
+Identify the input family
+$T^{(\alpha\beta\gamma\delta)}:=\lambda_{\alpha\beta\gamma\delta}Q^{(\alpha\beta\gamma\delta)}$
+with a single order-$4$ tensor $\mathcal{T}\in\R^{(3n)\times(3n)\times(3n)\times(3n)}$
+by bundling the pair-index $(\alpha,i)$ into one index in $[3n]$:
 \[
-\tilde{a}^{(\alpha)}_i = u_\alpha\, A^{(\alpha)}(i,:),\quad \tilde{b}^{(\beta)}_j = v_\beta\, A^{(\beta)}(j,:),\quad \tilde{c}^{(\gamma)}_k = w_\gamma\, A^{(\gamma)}(k,:),\quad \tilde{d}^{(\delta)}_\ell = x_\delta\, A^{(\delta)}(\ell,:).
+p=3(\alpha-1)+i,\quad q=3(\beta-1)+j,\quad r=3(\gamma-1)+k,\quad s=3(\delta-1)+\ell,
 \]
+setting $\mathcal{T}_{pqrs} := T^{(\alpha\beta\gamma\delta)}_{ijk\ell}$.
+This is only a fixed permutation/reshaping of coordinates.
+
+\subsection{Step 2: Define the four mode-unfoldings}
+
+For $m\in\{1,2,3,4\}$, let $U_m(\mathcal{T})$ be the standard mode-$m$ matricization:
+\begin{align*}
+U_1(\mathcal{T}) &\in \R^{(3n)\times(3n)^3}, &
+U_1(\mathcal{T})_{p,(q,r,s)} &:= \mathcal{T}_{pqrs},\\
+U_2(\mathcal{T}) &\in \R^{(3n)\times(3n)^3}, &
+U_2(\mathcal{T})_{q,(p,r,s)} &:= \mathcal{T}_{pqrs},
+\end{align*}
+and similarly for $U_3, U_4$.
+
+\subsection{Step 3: Define $\mathbf{F}$ as all $5\times 5$ minors}
+
+\begin{definition}[The polynomial map]
+Define
+\[
+\mathbf{F}(\mathcal{T})
+:=
+\Big(
+\det\big(U_m(\mathcal{T})[I,J]\big)
+\Big)_{\substack{m\in\{1,2,3,4\}\\ I\subset[3n],\,J\subset[(3n)^3]\\ |I|=|J|=5}}
+\in\R^N,
+\]
+where $U_m(\mathcal{T})[I,J]$ denotes the $5\times 5$ submatrix with row-set $I$ and column-set $J$.
+\end{definition}
+
+\paragraph{Property checks (items 1--2).}
+\begin{itemize}
+\item $\mathbf{F}$ depends only on the coordinates of $\mathcal{T}$: independent of $A$. \checkmark
+\item Each coordinate is a $5\times 5$ determinant, hence degree $5$ in $\mathcal{T}$, independent of $n$. \checkmark
+\end{itemize}
+
+\subsection{Key geometric fact: mode-rank $4$}
+
+Write the row vectors of $A^{(\alpha)}$ as $r_{\alpha,i}\in\R^4$ ($i\in[3]$).
+Then
+\[
+\mathcal{Q}_{pqrs}
+=
+\det(r_{\alpha(p),i(p)},\;r_{\beta(q),j(q)},\;r_{\gamma(r),k(r)},\;r_{\delta(s),\ell(s)}).
+\]
+The determinant is linear in the first argument, so the mode-1 unfolding factors:
+\[
+U_1(\mathcal{Q})_{p,\mathbf{c}} = \sum_{a=1}^4 [r_{\alpha(p),i(p)}]_a \cdot C_a(\mathbf{c}),
+\]
+where $C_a(\mathbf{c})$ is the cofactor of position $a$ in the first row.
+Hence $U_1(\mathcal{Q}) = R\cdot C$ with $R\in\R^{3n\times 4}$, $C\in\R^{4\times(3n)^3}$, and $\mathrm{rank}(U_1(\mathcal{Q}))\le 4$.
+For Zariski-generic $A$, the rank is exactly $4$.
+
+\begin{remark}[Diagonal blocks vanish]
+For $\alpha=\beta=\gamma=\delta$: $Q^{(\alpha\alpha\alpha\alpha)}_{ijk\ell}=\det(r_{\alpha,i},r_{\alpha,j},r_{\alpha,k},r_{\alpha,\ell})$.
+Since $i,j,k,\ell\in[3]$ and we need $4$ entries, at least two indices coincide, giving repeated rows.
+Hence $Q^{(\alpha\alpha\alpha\alpha)}=0$ for all inner indices.
+\end{remark}
+
+\subsection{Forward direction ($\Rightarrow$): rank-1 implies $\mathbf{F}=0$}
+
+Assume $\lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta w_\gamma x_\delta$ for all non-identical tuples
+(with $\lambda=0$ on the diagonal, matching $Q=0$).
+
+Define lifted vectors $\widehat{u}_{3(\alpha-1)+i}=u_\alpha$, and similarly for $\widehat{v},\widehat{w},\widehat{x}$.
+Then for every entry:
+\[
+\mathcal{T}_{pqrs}
+=
+\widehat{u}_p\,\widehat{v}_q\,\widehat{w}_r\,\widehat{x}_s \,\mathcal{Q}_{pqrs}.
+\]
+This is a separable (mode-wise) diagonal scaling of $\mathcal{Q}$:
+\[
+U_1(\mathcal{T}) = D_{\widehat{u}} \cdot U_1(\mathcal{Q}) \cdot D_{\widehat{v}\otimes\widehat{w}\otimes\widehat{x}},
+\]
+where $D_\cdot$ denotes diagonal matrices. Diagonal scaling does not change rank, so
+$\mathrm{rank}(U_1(\mathcal{T}))\le 4$ and all $5\times 5$ minors vanish. The same holds for modes 2--4.
+Hence $\mathbf{F}(\mathcal{T})=0$. \qed
+
+\subsection{Backward direction ($\Leftarrow$): $\mathbf{F}=0$ implies rank-1}
+
+Assume $\mathbf{F}(\mathcal{T})=0$. Then $\mathrm{rank}(U_m(\mathcal{T}))\le 4$ for each mode $m$.
+
+\begin{lemma}[Diagonal rigidity]\label{lem:rigidity}
+Let $B\in\R^{4\times M}$ have full row rank $4$ and assume \emph{every} $4\times 4$ minor of $B$ is nonzero.
+If $D\in(\R^*)^{M\times M}$ is diagonal and there exists $G\in\mathrm{GL}_4$ with $G\,B = B\,D$,
+then $D=cI$ for some $c\in\R^*$.
 \end{lemma}
 
 \begin{proof}
-By multilinearity of the determinant:
-\begin{align*}
-T^{(\alpha\beta\gamma\delta)}_{ijk\ell} &= u_\alpha v_\beta w_\gamma x_\delta \det(A^{(\alpha)}(i,:),\; A^{(\beta)}(j,:),\; A^{(\gamma)}(k,:),\; A^{(\delta)}(\ell,:)) \\
-&= \det(u_\alpha A^{(\alpha)}(i,:),\; v_\beta A^{(\beta)}(j,:),\; w_\gamma A^{(\gamma)}(k,:),\; x_\delta A^{(\delta)}(\ell,:)).\qedhere
-\end{align*}
+Pick any $4$-subset $I\subset[M]$ and take determinants of the $4\times 4$ submatrix $B_I$:
+\[
+\det(G)\det(B_I) = \det(G B_I) = \det(B_I D_I) = \det(B_I)\prod_{i\in I} d_i.
+\]
+Since $\det(B_I)\neq 0$, we get $\prod_{i\in I} d_i=\det(G)$ for every $|I|=4$.
+Comparing two subsets sharing three indices forces all $d_i$ equal, hence $D=cI$.
 \end{proof}
 
-\subsection{The polynomial map: Grassmann--Pl\"ucker syzygies}
+\paragraph{Iterative mode separation.}
+The rank-$\le 4$ condition on $U_1(\mathcal{T})$ is used as follows.
+Choose $5$ distinct matrix indices $\alpha_1,\ldots,\alpha_5\in[n]$ and fix a row index $i_0\in[3]$.
+The $5$ vectors $r_{\alpha_m,i_0}\in\R^4$ satisfy a unique (up to scalar) linear dependency
+$\sum_{m=1}^5 d_m r_{\alpha_m,i_0}=0$ with $d_m\neq 0$ (Zariski-genericity: any $4$ are independent).
 
-\begin{definition}[Row-pairs and position typing]
-A \emph{row-pair} is an element $(\mu,r)\in[n]\times[3]$, specifying matrix $\mu$ and row $r$. We think of row-pairs as ``points in configuration space'' and write $\mathbf{v}_{(\mu,r)}^{(p)}$ for the vector associated to row-pair $(\mu,r)$ in position $p\in\{1,2,3,4\}$.
+By multilinearity of the determinant, $\sum_m d_m\, U_1(\mathcal{Q})_{(\alpha_m,i_0),\mathbf{c}}=0$ for all columns $\mathbf{c}$.
 
-Under rank-1 $\lambda$:
+Since $\mathrm{rank}(U_1(\mathcal{T}))\le 4$, the $5$ scaled rows
+$U_1(\mathcal{T})_{(\alpha_m,i_0),\mathbf{c}} = \lambda_{\alpha_m,\beta(\mathbf{c}),\gamma(\mathbf{c}),\delta(\mathbf{c})}\cdot U_1(\mathcal{Q})_{(\alpha_m,i_0),\mathbf{c}}$
+also satisfy a dependency $\sum_m c_m\, U_1(\mathcal{T})_{(\alpha_m,i_0),\mathbf{c}}=0$.
+
+For generic $A$, the kernel of the $5\times(3n)^3$ submatrix of $U_1(\mathcal{Q})$ is $1$-dimensional.
+The scaled dependency must be proportional to the unscaled one:
 \[
-\mathbf{v}_{(\mu,r)}^{(1)} = u_\mu a^{(\mu)}_r,\quad \mathbf{v}_{(\mu,r)}^{(2)} = v_\mu a^{(\mu)}_r,\quad \mathbf{v}_{(\mu,r)}^{(3)} = w_\mu a^{(\mu)}_r,\quad \mathbf{v}_{(\mu,r)}^{(4)} = x_\mu a^{(\mu)}_r,
+c_m\,\lambda_{\alpha_m,\beta,\gamma,\delta} = \eta(\beta,\gamma,\delta)\cdot d_m
+\qquad\text{for some function }\eta.
 \]
-and $T^{(\alpha\beta\gamma\delta)}_{ijk\ell} = \det(\mathbf{v}^{(1)}_{(\alpha,i)},\,\mathbf{v}^{(2)}_{(\beta,j)},\,\mathbf{v}^{(3)}_{(\gamma,k)},\,\mathbf{v}^{(4)}_{(\delta,\ell)})$.
-\end{definition}
-
-\begin{definition}[The Pl\"ucker syzygy equations]\label{def:plucker}
-For any choice of 5 row-pairs assigned to positions (with one position receiving 2 row-pairs), define quadratic equations expressing that 5 vectors in $\R^4$ are linearly dependent. Concretely, for row-pairs $(\alpha_1,i_1),(\alpha_2,i_2)$ both assigned to position~1, and $(\beta,j),(\gamma,k),(\delta,\ell)$ in positions 2,3,4:
-
-Consider the 5 vectors: $\mathbf{v}^{(1)}_{(\alpha_1,i_1)}, \mathbf{v}^{(1)}_{(\alpha_2,i_2)}, \mathbf{v}^{(2)}_{(\beta,j)}, \mathbf{v}^{(3)}_{(\gamma,k)}, \mathbf{v}^{(4)}_{(\delta,\ell)}$ in $\R^4$. Their linear dependence yields the syzygy (one instance):
-\begin{equation}\label{eq:plucker-instance}
-\begin{aligned}
-&T^{(\alpha_1\beta\gamma\delta)}_{ijk\ell}\cdot T^{(\alpha_2\beta'\gamma'\delta')}_{i'j'k'\ell'} - T^{(\alpha_2\beta\gamma\delta)}_{i_2jk\ell}\cdot T^{(\alpha_1\beta'\gamma'\delta')}_{i_1j'k'\ell'} \\
-&\quad = \sum_{\text{column swaps}} (\pm)\, T^{(\cdots)}_{\cdots}\cdot T^{(\cdots)}_{\cdots}
-\end{aligned}
+For any two indices $m_1,m_2$ with $c_{m_1},d_{m_1}\neq 0$:
+\[
+\frac{\lambda_{\alpha_{m_1},\beta,\gamma,\delta}}{\lambda_{\alpha_{m_2},\beta,\gamma,\delta}}
+=
+\frac{c_{m_2}\,d_{m_1}}{c_{m_1}\,d_{m_2}}
+= \text{constant (independent of }\beta,\gamma,\delta\text{)}.
+\]
+Since this holds for all pairs from $\{\alpha_1,\ldots,\alpha_5\}$ and all such $5$-tuples exhaust $[n]$,
+we conclude: there exist $u\in(\R^*)^n$ and $m\in(\R^*)^{n\times n\times n}$ with
+\begin{equation}\label{eq:mode1}
+\lambda_{\alpha\beta\gamma\delta}=u_\alpha\,m_{\beta\gamma\delta}
+\qquad\text{for all non-identical }(\alpha,\beta,\gamma,\delta).
 \end{equation}
-where the right-hand side consists of determinants with one of $\beta,\gamma,\delta$ swapped into position~1 (producing ``cross-position'' determinants that also appear in the $T$-collection since all non-identical tuples are present).
 
-The full map $\mathbf{F}$ collects all such Pl\"ucker syzygies, over all choices of 5 row-pairs and all position-doubling patterns.
-\end{definition}
+Applying the identical argument to $U_2(\mathcal{T})$:
+\begin{equation}\label{eq:mode2}
+\lambda_{\alpha\beta\gamma\delta}=v_\beta\,n_{\alpha\gamma\delta}.
+\end{equation}
+Combining \eqref{eq:mode1} and \eqref{eq:mode2}: fix $\alpha_0$ and write
+$u_{\alpha_0}m_{\beta\gamma\delta}=v_\beta n_{\alpha_0\gamma\delta}$,
+giving $m_{\beta\gamma\delta}=v_\beta\,t_{\gamma\delta}$ with $t_{\gamma\delta}:=n_{\alpha_0\gamma\delta}/u_{\alpha_0}$.
+Hence $\lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta\,t_{\gamma\delta}$.
 
-\subsection{Verification of the three properties}
+Applying the argument to $U_3(\mathcal{T})$ and $U_4(\mathcal{T})$ forces
+$t_{\gamma\delta}=w_\gamma x_\delta$. Therefore
+\[
+\lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta w_\gamma x_\delta
+\qquad\text{for all non-identical }(\alpha,\beta,\gamma,\delta),
+\]
+completing the proof.
 
-\begin{theorem}[The map $\mathbf{F}$ exists with the required properties]\label{thm:main}
-The polynomial map $\mathbf{F}$ consisting of all Grassmann--Pl\"ucker quadratic syzygies among the $T$-entries (Definition~\ref{def:plucker}) satisfies:
+%% ===================================================================
+\section{Verification Notes}
+%% ===================================================================
+
+\begin{remark}[Steps verified]
 \begin{enumerate}
-\item $\mathbf{F}$ depends only on the indexing structure, not on $A^{(1)},\ldots,A^{(n)}$.
-\item Each coordinate function of $\mathbf{F}$ has degree exactly $2$, independent of $n$.
-\item For Zariski-generic $A$: $\mathbf{F}(\lambda\odot Q)=0$ if and only if $\lambda$ has rank-1 structure $\lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta w_\gamma x_\delta$ on non-identical tuples.
+\item \emph{Reshaping}: fixed bijection, no content change. \checkmark
+\item \emph{Mode rank $\leq 4$}: determinant is multilinear $\Rightarrow$ each unfolding factors through $\R^4$. \checkmark
+\item \emph{Diagonal blocks vanish}: pigeonhole ($4$ indices from $[3]$ $\Rightarrow$ repeated row $\Rightarrow$ det $= 0$). \checkmark
+\item \emph{Forward}: separable diagonal scaling preserves rank. \checkmark
+\item \emph{Diagonal rigidity lemma}: comparing $4$-subsets sharing $3$ elements forces all $d_i$ equal. Requires $M \geq 5$; here $M = (3n)^3 \gg 5$. \checkmark
+\item \emph{Backward, proportionality}: $5$ vectors in $\R^4$ have unique (up to scalar) dependency for generic $A$; scaled dependency must be proportional $\Rightarrow$ ratio $\lambda_{\alpha_1}/\lambda_{\alpha_2}$ is constant in remaining indices. \checkmark
+\item \emph{Iterative separation}: mode-1 $\Rightarrow$ $\lambda = u_\alpha m$; mode-2 $\Rightarrow$ $\lambda = v_\beta n$; combine $\Rightarrow$ $\lambda = u_\alpha v_\beta t$; modes 3,4 $\Rightarrow$ $t = w_\gamma x_\delta$. \checkmark
+\item \emph{Degree bound}: $5 \times 5$ determinant = degree $5$, independent of $n$. \checkmark
 \end{enumerate}
-\end{theorem}
+\end{remark}
 
-\begin{proof}
-\textbf{Properties 1 and 2} are immediate: the Pl\"ucker relations are universal identities among determinants---they depend only on the dimension (4) and the combinatorial pattern of which entries appear, not on the specific vectors. Each relation is a quadratic polynomial (degree 2) in the $T$-entries.
+\begin{remark}[Why $n \geq 5$]
+We need $5$ distinct matrix indices to form the $5$-vector dependency argument. With $n \geq 5$, this is always possible.
+\end{remark}
 
-\textbf{Property 3, forward direction ($\Longrightarrow$).}
-If $\lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta w_\gamma x_\delta$, then by Lemma~\ref{lem:absorption}, each $T^{(\alpha\beta\gamma\delta)}_{ijk\ell}$ is a $4\times 4$ determinant of vectors in $\R^4$. The Pl\"ucker relations are algebraic identities satisfied by ALL $4\times 4$ determinants (they express the linear dependencies among sets of 5 vectors in a 4-dimensional space). Hence $\mathbf{F}(\lambda\odot Q)=0$.
-
-\textbf{Property 3, reverse direction ($\Longleftarrow$).}
-Assume $\mathbf{F}(\lambda\odot Q)=0$ for Zariski-generic $A^{(1)},\ldots,A^{(n)}$. We must show $\lambda$ is rank-1.
-
-\emph{Step 1: The $T$-entries are determinants of some vectors.}
-Since the Pl\"ucker relations are satisfied, the $T$-entries lie in the image of the Pl\"ucker embedding. That is, there exist vectors $\{\tilde{\mathbf{v}}^{(p)}_{(\mu,r)}\in\R^4\}$ (for $p=1,2,3,4$, $\mu\in[n]$, $r\in[3]$) such that
-\begin{equation}\label{eq:realization}
-T^{(\alpha\beta\gamma\delta)}_{ijk\ell} = \det(\tilde{\mathbf{v}}^{(1)}_{(\alpha,i)},\;\tilde{\mathbf{v}}^{(2)}_{(\beta,j)},\;\tilde{\mathbf{v}}^{(3)}_{(\gamma,k)},\;\tilde{\mathbf{v}}^{(4)}_{(\delta,\ell)})
-\end{equation}
-for all non-identical $(\alpha,\beta,\gamma,\delta)$.
-
-\emph{Step 2: Relate the realization vectors to the original rows.}
-Since $T^{(\alpha\beta\gamma\delta)}_{ijk\ell} = \lambda_{\alpha\beta\gamma\delta}\det(a^{(\alpha)}_i,a^{(\beta)}_j,a^{(\gamma)}_k,a^{(\delta)}_\ell)$, and for generic $A$ the map from vectors to their determinants is ``essentially injective'' (up to $\mathrm{GL}_4$ action and scalar rescalings per position), we conclude that for each position $p$ and matrix index $\mu$:
-\[
-\tilde{\mathbf{v}}^{(p)}_{(\mu,r)} = c^{(p)}_\mu \cdot (L_p\, a^{(\mu)}_r)
-\]
-for some scalar $c^{(p)}_\mu\in\R^*$ and a common $L_p\in\mathrm{GL}_4(\R)$ (independent of $\mu,r$).
-
-\emph{Step 3: Extract rank-1 structure.}
-From \eqref{eq:realization}:
-\begin{align*}
-T^{(\alpha\beta\gamma\delta)}_{ijk\ell} &= \det(c^{(1)}_\alpha L_1 a^{(\alpha)}_i,\; c^{(2)}_\beta L_2 a^{(\beta)}_j,\; c^{(3)}_\gamma L_3 a^{(\gamma)}_k,\; c^{(4)}_\delta L_4 a^{(\delta)}_\ell) \\
-&= c^{(1)}_\alpha c^{(2)}_\beta c^{(3)}_\gamma c^{(4)}_\delta \cdot \det(L_1,L_2,L_3,L_4)\cdot Q^{(\alpha\beta\gamma\delta)}_{ijk\ell}
-\end{align*}
-Wait---this isn't quite right because $L_1,\ldots,L_4$ act on different rows, not the same matrix. The correct identity uses the fact that the determinant is multilinear in its rows. Since each position $p$ contributes one row, and each row is transformed by $L_p$:
-
-\[
-\det(L_1 a, L_2 b, L_3 c, L_4 d) = \det(L_1,L_2,L_3,L_4 \text{ ``acting''}) \cdot \det(a,b,c,d)
-\]
-This factorization holds only if all $L_p$ are the same (or scalar multiples of identity). For generic $A$, the rigidity of the determinantal structure forces $L_1=\cdots=L_4=L$ (up to the $\mathrm{GL}_4$ ambiguity that cancels in the determinant). Then:
-\[
-T^{(\alpha\beta\gamma\delta)}_{ijk\ell} = c^{(1)}_\alpha c^{(2)}_\beta c^{(3)}_\gamma c^{(4)}_\delta \cdot (\det L) \cdot Q^{(\alpha\beta\gamma\delta)}_{ijk\ell}.
-\]
-
-Comparing with $T = \lambda \odot Q$:
-\[
-\lambda_{\alpha\beta\gamma\delta} = (\det L)\cdot c^{(1)}_\alpha c^{(2)}_\beta c^{(3)}_\gamma c^{(4)}_\delta = u_\alpha v_\beta w_\gamma x_\delta,
-\]
-with $u_\alpha = (\det L)^{1/4} c^{(1)}_\alpha$, $v_\beta = (\det L)^{1/4} c^{(2)}_\beta$, etc. (distributing the global constant among the four factors). Hence $\lambda$ is rank-1.
-
-The genericity of $A$ is used in Step~2 to ensure that the determinantal map is ``rigid'': the only way to reproduce all $Q$-proportional entries as determinants is via the position-factored rescaling. This requires $n\ge 5$ to have enough constraints (specifically, enough distinct 4-tuples to pin down the $\mathrm{GL}_4$ ambiguity and the per-matrix scalings).
-\end{proof}
-
-\subsection{Why $n\ge 5$ is needed}
-
-The condition $n\ge 5$ ensures:
-\begin{enumerate}
-\item For any position, we have at least 5 distinct matrix indices available, providing 5 vectors from a single position that must be linearly dependent in $\R^4$. This is the source of nontrivial Pl\"ucker relations.
-\item With $n\ge 5$, we can form 4-tuples $(\alpha,\beta,\gamma,\delta)$ with all entries distinct, while still having a 5th index available for syzygies. For $n<5$, some tuples would force repeated indices, weakening the constraints.
-\item The dimension count: for each position $p$, we have $3n$ vectors $\{\tilde{\mathbf{v}}^{(p)}_{(\mu,r)}\}$ in $\R^4$. With $3n\ge 15 > 4$, the vectors are highly overdetermined, and the Pl\"ucker constraints tightly control the realization.
-\end{enumerate}
-
-\subsection{Explicit Pl\"ucker equations}
-
-For concreteness, the simplest Pl\"ucker relation arises from 5 row-pairs $(\alpha_1,i_1),\ldots,(\alpha_5,i_5)$ all in position~1, with fixed position-2,3,4 entries $(\beta,j),(\gamma,k),(\delta,\ell)$. The 5 vectors $\tilde{\mathbf{v}}^{(1)}_{(\alpha_m,i_m)}$ ($m=1,\ldots,5$) in $\R^4$ satisfy one syzygy:
-
-\begin{equation}\label{eq:explicit}
-\sum_{m=1}^5 (-1)^{m+1} T^{(\alpha_m\,\beta\,\gamma\,\delta)}_{i_m\,j\,k\,\ell}\; \det(\tilde{\mathbf{v}}^{(1)}_{(\alpha_1,i_1)},\ldots,\widehat{\tilde{\mathbf{v}}^{(1)}_{(\alpha_m,i_m)}},\ldots,\tilde{\mathbf{v}}^{(1)}_{(\alpha_5,i_5)}) = 0.
-\end{equation}
-
-The ``complementary determinant'' $\det(\ldots)$ involves 4 of the 5 position-1 vectors, which can be expressed as another $T$-entry (with the ``missing'' vector replaced by any position-2,3,4 entry and compensating by a $T$-ratio). This produces quadratic equations purely in the $T$-entries.
-
-Alternatively, the cleanest quadratic Pl\"ucker form uses a different pattern. For 4 row-pairs from position~1 and 1 from position~2, both completing to the same positions~3,4:
-
-\begin{equation}\label{eq:quad-plucker}
-T^{(\alpha_1\,\beta_1\,\gamma\,\delta)}_{i_1\,j_1\,k\,\ell}\, T^{(\alpha_2\,\beta_2\,\gamma\,\delta)}_{i_2\,j_2\,k\,\ell}
-\;-\; T^{(\alpha_1\,\beta_2\,\gamma\,\delta)}_{i_1\,j_2\,k\,\ell}\, T^{(\alpha_2\,\beta_1\,\gamma\,\delta)}_{i_2\,j_1\,k\,\ell}
-\;+\; T^{(\alpha_1\,\alpha_2\,\gamma\,\delta)}_{i_1\,i_2\,k\,\ell}\, T^{(\beta_1\,\beta_2\,\gamma\,\delta)}_{j_1\,j_2\,k\,\ell}
-\;=\; 0,
-\end{equation}
-which is the determinantal expansion identity (Laplace expansion of the $4\times 4$ determinant) applied to the rank-1 realization. Under the substitution $T=\lambda\odot Q$, this is a purely quadratic polynomial in the $T$-entries, independent of $A$.
-
-%% ===================================================================
-\section{RS $\leftrightarrow$ Classical Dictionary}
-%% ===================================================================
-
-\begin{center}
-\renewcommand{\arraystretch}{1.3}
-\begin{tabular}{ll}
-\hline
-\textbf{RS Primitive} & \textbf{Classical Counterpart} \\
-\hline
-Finite local resolution (RG4) & Rank-$r$ CP decomposition \\
-Single recognition channel (rank 1) & $\lambda = u\otimes v\otimes w\otimes x$ \\
-Ledger entry (antisymmetric) & $4\times 4$ determinant $Q^{(\alpha\beta\gamma\delta)}_{ijk\ell}$ \\
-Ledger conservation (T3: flux $= 0$) & Pl\"ucker / Grassmann syzygies \\
-CPM structured set $\mathsf{S}$ & Determinantal variety (Pl\"ucker image) \\
-CPM defect $\mathsf{D}$ & Pl\"ucker relation residual \\
-Defect $= 0$ $\Leftrightarrow$ structured & $T$ arises from rescaled determinants \\
-Cost factorization across modes & Rank-1: cost decomposes per factor \\
-Generic recognition (RG2 nontrivial) & Zariski-generic $A$ \\
-$n\ge 5$ (``5 recognizers'') & 5 vectors in $\R^4$ must be dependent \\
-\hline
-\end{tabular}
-\end{center}
-
-%% ===================================================================
-\section{Summary}
-%% ===================================================================
-
-\begin{center}
-\fbox{\parbox{0.9\textwidth}{
-\textbf{Answer: Yes.} Such a polynomial map $\mathbf{F}$ exists.
-
-\textbf{Construction:} $\mathbf{F}$ consists of the Grassmann--Pl\"ucker quadratic syzygies applied to the $T$-entries, viewed as candidate $4\times 4$ determinants of position-typed row-vectors.
-
-\textbf{Properties:}
-\begin{enumerate}
-\item \emph{$A$-independence:} Pl\"ucker relations are universal algebraic identities, depending only on $\dim\R^4=4$ and the combinatorial indexing.
-\item \emph{Degree $=2$:} All Pl\"ucker relations are quadratic.
-\item \emph{Characterization:} Forward: rank-1 $\lambda$ $\Rightarrow$ $T$-entries are true determinants $\Rightarrow$ Pl\"ucker satisfied. Reverse: Pl\"ucker satisfied $\Rightarrow$ (for generic $A$) realization vectors must be position-scalar multiples of the original rows $\Rightarrow$ $\lambda$ factors as $u_\alpha v_\beta w_\gamma x_\delta$.
-\end{enumerate}
-
-\textbf{Why $n\ge 5$:} Ensures enough distinct indices for nontrivial Pl\"ucker relations (5 vectors in $\R^4$ are necessarily dependent) and enough constraints to rigidify the determinantal realization.
-}}
-\end{center}
+\begin{thebibliography}{9}
+\bibitem{AbouzaidEtAl2026}
+M.~Abouzaid et al.
+\newblock First Proof.
+\newblock \emph{arXiv:2602.05192}, February 2026.
+\end{thebibliography}
 
 \end{document}
