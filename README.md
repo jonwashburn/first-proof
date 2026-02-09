@@ -59,7 +59,7 @@ The RS prediction is then converted into a self-contained classical proof using 
 | 3 | Markov chain from interpolation ASEP polynomials | Algebraic Combinatorics | Williams | ✅ `solution_q3.tex` |
 | 4 | Superadditivity of $1/\Phi_n$ under free convolution | Spectral Graph Theory | Spielman/Srivastava | ✅ `solution_q4.tex` |
 | 5 | $O$-slice connectivity via geometric fixed points | Algebraic Topology | Blumberg | ✅ `solution_q5.tex` |
-| 6 | Existence of $\epsilon$-light vertex subsets | Spectral Graph Theory | Spielman | 🔲 |
+| 6 | Existence of $\epsilon$-light vertex subsets | Spectral Graph Theory | Spielman | ⚠️ `solution_q6.tex` |
 | 7 | Lattice fundamental groups with acyclic cover | Lattices in Lie Groups | Weinberger | ✅ `solution_q7.tex` |
 | 8 | Lagrangian smoothing of polyhedral surfaces | Symplectic Geometry | Abouzaid | ✅ `solution_q8.tex` |
 | 9 | Polynomial map detecting rank-1 tensor scaling | Tensor Analysis | Kileel | ✅ `solution_q9.tex` |
@@ -119,6 +119,7 @@ first-proof/
 ├── solution_q3.tex                    # Q3: ASEP Markov chain (Williams)
 ├── solution_q4.tex                    # Q4: Finite-free Stam inequality (Spielman/Srivastava)
 ├── solution_q5.tex                    # Q5: O-slice filtration (Blumberg)
+├── solution_q6.tex                    # Q6: ε-light subsets (Spielman) [partial]
 ├── solution_q7.tex                    # Q7: Lattice torsion obstruction (Weinberger)
 ├── solution_q8.tex                    # Q8: Lagrangian smoothing (Abouzaid)
 ├── solution_q9.tex                    # Q9: Rank-1 tensor detection (Kileel)
@@ -135,6 +136,7 @@ pdflatex solution_q2.tex
 pdflatex solution_q3.tex
 pdflatex solution_q4.tex
 pdflatex solution_q5.tex
+pdflatex solution_q6.tex
 pdflatex solution_q7.tex
 pdflatex solution_q8.tex
 pdflatex solution_q9.tex
