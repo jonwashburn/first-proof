@@ -111,6 +111,7 @@ The process provides mutual validation:
 ```
 first-proof/
 ├── README.md                          # This file
+├── first_proof_solutions.tex          # ★ UNIFIED PAPER: all 10 solutions
 ├── First Proof.pdf                    # The 10 questions (Abouzaid et al., 2026)
 ├── Recognition_Stability_Audit.tex    # RSA method — impossibility certification
 ├── CPM.tex                            # Coercive Projection Method — proof template
