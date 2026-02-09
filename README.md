@@ -57,7 +57,7 @@ The RS prediction is then converted into a self-contained classical proof using 
 | 1 | Quasi-invariance of $\Phi^4_3$ measure | Stochastic Analysis | Hairer | ✅ `solution_q1.tex` |
 | 2 | Whittaker model Rankin–Selberg integral | Representation Theory | Nelson | ✅ `solution_q2.tex` |
 | 3 | Markov chain from interpolation ASEP polynomials | Algebraic Combinatorics | Williams | ✅ `solution_q3.tex` |
-| 4 | Superadditivity of $1/\Phi_n$ under free convolution | Spectral Graph Theory | Spielman/Srivastava | 🔲 |
+| 4 | Superadditivity of $1/\Phi_n$ under free convolution | Spectral Graph Theory | Spielman/Srivastava | ✅ `solution_q4.tex` |
 | 5 | $O$-slice connectivity via geometric fixed points | Algebraic Topology | Blumberg | ✅ `solution_q5.tex` |
 | 6 | Existence of $\epsilon$-light vertex subsets | Spectral Graph Theory | Spielman | 🔲 |
 | 7 | Lattice fundamental groups with acyclic cover | Lattices in Lie Groups | Weinberger | ✅ `solution_q7.tex` |
@@ -117,6 +117,7 @@ first-proof/
 ├── solution_q1.tex                    # Q1: Φ⁴₃ quasi-invariance (Hairer)
 ├── solution_q2.tex                    # Q2: Rankin-Selberg Whittaker (Nelson)
 ├── solution_q3.tex                    # Q3: ASEP Markov chain (Williams)
+├── solution_q4.tex                    # Q4: Finite-free Stam inequality (Spielman/Srivastava)
 ├── solution_q5.tex                    # Q5: O-slice filtration (Blumberg)
 ├── solution_q7.tex                    # Q7: Lattice torsion obstruction (Weinberger)
 ├── solution_q8.tex                    # Q8: Lagrangian smoothing (Abouzaid)
@@ -132,6 +133,7 @@ Each solution is a standalone LaTeX document:
 pdflatex solution_q1.tex
 pdflatex solution_q2.tex
 pdflatex solution_q3.tex
+pdflatex solution_q4.tex
 pdflatex solution_q5.tex
 pdflatex solution_q7.tex
 pdflatex solution_q8.tex
